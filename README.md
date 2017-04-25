@@ -1,3 +1,3 @@
 # Exam-quiz-tool
 
-test2
+Use database files by using exam_quiz.sql in ExamCodigniter folder
