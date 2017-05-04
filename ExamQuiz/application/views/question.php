@@ -14,8 +14,8 @@ function myFunction() {
 </head>
 <body>
 <div class="container">
-	<a class="btn btn-primary" href="question_page.php">Overview questions</a>
-	<a class="btn btn-primary" href="<?php echo base_url();?>index.php/Start/index" onclick = "confirm()">Stop exam</a>
+	<a class="btn btn-default" href="question_page.php">Overview questions</a>
+	<a class="btn btn-danger" href="<?php echo base_url();?>index.php/Start/index" onclick = "confirm()">Stop exam</a>
 	<div class="question">
 		<form method="POST">
 			<fieldset>
@@ -25,13 +25,13 @@ function myFunction() {
 			<hr>
 
 			<hr>
-			<input type="checkbox" name="hold">Review question later
+			<input type="checkbox" name="hold">Check question later
 			<br><br>
 			</fieldset>
 		</form>
-		<a class="btn btn-primary" href="question_page.php">Previous</a>
+		<a class="btn btn-default" href="question_page.php">Previous</a>
 		Tijd over: <span id="demo"></span>
-		<a class="btn btn-primary" href="question_page.php" style="float:right">Next</a>
+		<a class="btn btn-default" href="question_page.php" style="float:right">Next</a>
 	</div>
 </div>
 </body>

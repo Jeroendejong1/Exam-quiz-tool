@@ -24,6 +24,8 @@ class Exam extends CI_Model{
 	public function examDelete($id){
 		$this->db->where('id',$id);
 		$this->db->delete('exam');
+		//$this->db->where('exam', ...);
+		//$this->db->delete('question')
 	}
 }
 

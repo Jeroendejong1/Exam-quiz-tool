@@ -1,18 +1,24 @@
-<!doctype html>
-<html>
-<head>
-<title>Instructions</title>
-<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../css/personalStyle.css">
 
-</head>
-<body>
-<div class="container">
 <h1>Instructions</h1>
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.</p>
-<p>Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia.</p>
-<a href="question_view.php" class="btn btn-primary">Return to overview</a>
-<a href="<?php echo base_url();?>index.php/Start/question" class="btn btn-primary">Start exam</a>
+
+<p>
+	You have selected the "..." exam quiz.
+</p>
+
+<p>
+	This exam quiz has <strong>...</strong> questions. Each question is worth 1 or more points.
+	If you gain <strong>...%</strong> of the points, you have passed the quiz.
+	The time limit for this exam is <strong>...</strong>. You can see in the remaining time in the bottom-left corner.
+</p>
+
+<p>
+	You can click the checkbox below the question if you want to review it later on. By clicking on the overview-button, you can see all the questions,
+	and which of them you have checked.
+</p>
+
+
+<a href="<?php echo base_url();?>index.php/Start/question" class="btn btn-success">Start exam</a>
+<a href="question_view.php" class="btn btn-danger">Return to overview</a>
 </div>
 </body>
 </html>

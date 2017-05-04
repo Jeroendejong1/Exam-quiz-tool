@@ -33,13 +33,12 @@ foreach ($examData as $row){
 			</div>
 			<input type="button" class="btn btn-default" value="Add another subject" onClick="addInput('dynamicInput');">
 			<br>
-			<br>
-			<label for="questionFile">Add question-file:</label>
-			<input type="file" id="questionFile" name="questionFile">
-			<br>
-			<br>
 			<label for="examTime">Set exam time (in minutes):</label><br>
 			<input type="number" placeholder="<?= $duration; ?>" class="form-control" id="examTime" name="examTime">
+			<br>
+			<br>
+			<label for="examTime">Requiered score (percentage):</label><br>
+			<input type="number" class="form-control" max="100" min="0" id="requieredScore" name="requeieredScore">
 			<br>
 			<br>
 			<input type="submit" name="submit" value="Submit" class="btn btn-primary">

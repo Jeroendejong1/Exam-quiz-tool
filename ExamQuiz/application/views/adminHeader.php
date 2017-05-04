@@ -11,3 +11,5 @@
 <body>
 
 <div class="container">
+
+<nav><a href="<?= base_url();?>index.php/admin/logout">Logout</a></nav>
