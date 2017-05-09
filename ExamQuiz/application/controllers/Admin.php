@@ -4,109 +4,18 @@
 //make sure base_url is always loaded by adding url to helper-array in autoload-file.
 
 class Admin extends CI_controller {
-//-----------------------------------login methods-------------------------	
 
-	
-	public function __construct(){
-		parent::__construct();
-		$this->load->model('Administrator');
-		$this->load->library(array('form_validation','session'));		//check
-		$this->load->helper(array('url','html','form'));				//check
-	}
-
-	public function index(){
-		$this->login();
-	}
-
-	public function login(){
-		$this->load->view('header');
-		$this->load->view('login');
-		$this->load->view('footer');
-	}
-
-	public function successpage(){
-		$this->load->view('header');
-		$this->load->view('examOverview');
-		$this->load->view('footer');
-	}
-
-	function logout(){
-		$this->session->sess_destroy();
-		redirect(base_url());
-	}
+	// function __construct(){
+	// parent::__construct();
+	// // to use admin pages, the administrator should be logged in, otherwise redirected to login-screen
+	// $this->load->library('session');
+		// if(! $this->session->userdata('admin')){
+			// redirect('login');
+		// }
+	// }
 
 
-	function signin(){
-		$email= trim($this->input->post('email'));
-		$password= trim($this->input->post('password'));
-
-		$query = $this->Administrator->processLogin($email,$password);
-	
-	
-		$this->form_validation->set_rules('email', 'email', 'required|callback_validateUser[' . $query->num_rows() . ']');
-		$this->form_validation->set_rules('password', 'password', 'required');
-	
-		$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
-		$this->form_validation->set_message('required', 'Enter %s');
-	
-		if ($this->form_validation->run() == FALSE) {
-			$this->load->view('header');
-			$this->load->view('login');
-			$this->load->view('footer');
-		}
-		else{
-			if($query){
-				$query = $query->result();
-				$user = array(
-				 'id' => $query[0]->id,
-				 'email' => $query[0]->email,
-				);
-				$this->session->set_userdata($user);
-				redirect('admin/examOverview');
-			}
-		}
-	}
-
-	//Custom Validation Method
-	public function validateUser($email,$recordCount){
-		if ($recordCount != 0){
-			return TRUE;
-		}
-		else{
-			$this->form_validation->set_message('validateUser', 'Invalid %s or Password');
-			return FALSE;
-		}
-	}
-
-	
 //------------------------------------exam methods----------------------------------------------------------------	
-	
-	//placed 'database' in autoload libraries 
-	//addExam creates exam and places it into DB
-	public function addExam(){
-		// show questiondata-table (TODO: --of all questions belonging to this exam)
-		$this->load->model('Question');
-		$data['questionData'] = $this->getQuestionData();
-		
-		$this->load->view('adminHeader');
-		$this->load->view('addExam',$data);
-		$this->load->view('footer');
-	}
-	
-	//examFormImport saves form input in $data, and sends it to Exam-model, which sends it to the DB
-	public function examFormInput(){
-		$data = array(										//place form-data in array
-			'name' => $this->input->post('examName'),
-			'duration' => $this->input->post('examTime'),
-			'requieredScore' => $this->input->post('requieredScore')
-		);
-		
-		$this->load->model('Exam');							//load model
-		$this->Exam->insertIntoExam($data);					//send $data to insertIntoExam-method
-
-		$this->examOverview();								//go to examOverview
-	}
-	
 	
 	//examOverview gets exam data from model 'Exam'(indirectly from DB), and places each exam inside table in examOverview-view.
 	public function examOverview(){
@@ -118,7 +27,29 @@ class Admin extends CI_controller {
 		$this->load->view('footer');
 	}
 	
-	//get data from model 'Exam', which gets the data from DB (??)
+	//placed 'database' in autoload libraries 
+	//addExam creates exam and places it into DB
+	public function addExam(){
+		$this->load->view('adminHeader');
+		$this->load->view('addExam');
+		$this->load->view('footer');
+	}
+	
+	//examFormImport saves form input in $data, and sends it to Exam-model, which sends it to the DB
+	public function examFormInput(){
+		$data = array(
+			'name' => $this->input->post('examName'),
+			'duration' => $this->input->post('examTime'),
+			'requieredScore' => $this->input->post('requieredScore')
+		);
+		
+		$this->load->model('Exam');
+		$this->Exam->insertIntoExam($data);
+
+		$this->examOverview();
+	}
+	
+	//get data from model 'Exam', which gets the data from DB
 	private function getExamData(){
 		$this->load->model('Exam');
 		$result = $this->Exam->getExamData();
@@ -127,10 +58,6 @@ class Admin extends CI_controller {
 
 	//updateExam loads examdata inside form, and makes it possible to change it (in progress)
 	public function updateExam(){
-		//get data for question table
-		$this->load->model('Question');
-		$data['questionData'] = $this->getQuestionData();		
-			
 		//get data for placeholders in form
 		$this->load->model('exam');
 		$data['examData'] = $this->getExamData();
@@ -141,8 +68,21 @@ class Admin extends CI_controller {
 		$this->load->view('footer');
 	}
 
+	//update form
+	public function examFormUpdate(){
+		$data = array(
+			'name' => $this->input->post('examName'),
+			'duration' => $this->input->post('examTime'),
+			'requieredScore' => $this->input->post('requieredScore')
+		);
+		$this->load->model('Exam');
+		$this->Exam->examUpdate($data,$id);
+
+		$this->examOverview();
+	}
+	
 	public function examFormChange(){
-		//TODO: fix id
+		
 		$newData = array(										//place form-data in array
 			'name' => $this->input->post('examName'),
 			'duration' => $this->input->post('examTime'),
@@ -169,13 +109,13 @@ class Admin extends CI_controller {
 		}
 		//if the page is reached via url, get id from url
 		else{
-			$id = $this->uri->segment(3);
-			$this->load->view('deleteConfirm', $id);
+			
+			$data =array( 'id' => $this->uri->segment(3));
+			$this->load->view('deleteConfirm', $data);
 		}
 		$this->load->view('footer');
 
 	}
-	
 	
 	//view data of exam with specific id (read only) (in progress) 
 	function viewExam(){
@@ -193,16 +133,69 @@ class Admin extends CI_controller {
 	
 //-------------------------------------------Question methods --------------------------------------------------------------------
 
-	private function getQuestionData(){
+	public function questionOverview(){
 		
 		$this->load->model('Question');
-		$result = $this->Question->getQuestionData();
+		$data =array( 
+			'id' => $this->uri->segment(3),
+			'questionData' => $this->getQuestionData()
+			);
+		$this->load->view('adminHeader');
+		$this->load->view('questionOverview',$data);
+		$this->load->view('footer');
+		
+	}
+	
+
+
+	private function getQuestionData(){
+		$this->load->model('Question');
+		$result = $this->Question->getQuestionData($id);
 		return $result;
 	}
 
 	public function addQuestion(){
+		$questionType = $this->uri->segment(3);
+		
+		if($questionType=="openEnded"){
+			$options = array(
+				'c2'=> "optional",
+				'c3'=> "optional",
+				'w1'=> "disabled",
+				'w2'=> "disabled",
+				'w3'=> "disabled",
+				'w4'=> "disabled",
+				'w5'=> "disabled",
+				'w6'=> "disabled"
+			);
+		}
+		elseif($questionType=="multipleChoice"){
+			$options = array(
+				'c2'=>"disabled",
+				'c3'=>"disabled",
+				'w1'=>"required",
+				'w2'=>"optional",
+				'w3'=>"optional",
+				'w4'=>"optional",
+				'w5'=>"optional",
+				'w6'=>"optional"
+			);
+		}
+		elseif($questionType=="checkbox"){
+			$options =array(
+				'c2'=>"optional",
+				'c3'=>"optional",
+				'w1'=>"required",
+				'w2'=>"optional",
+				'w3'=>"optional",
+				'w4'=>"optional",
+				'w5'=>"optional",
+				'w6'=>"optional"
+			);
+		}
+		
 		$this->load->view('adminHeader');
-		$this->load->view('addQuestion');
+		$this->load->view('addQuestion',$options);
 		$this->load->view('footer');	
 	}
 
@@ -226,17 +219,18 @@ class Admin extends CI_controller {
 	public function questionFormInput(){
 		$data = array(										//place form-data in array
 			'casus' => $this->input->post('casusText'),
-			'correctans1' => $this->input->post('myInputs1'),
-			'correctans2' => $this->input->post('myInputs2'),
-			'correctans3' => $this->input->post('myInputs3'),
+			'correctans1' => $this->input->post('correct1'),
+			'correctans2' => $this->input->post('correct2'),
+			'correctans3' => $this->input->post('correct3'),
 			'points' => $this->input->post('points'),
 			'question' => $this->input->post('question'),
 			'type' => $this->input->post('questionType'),
-			'wrongAns1' => $this->input->post('myInputs4'),
-			'wrongAns2' => $this->input->post('myInputs5'),
-			'wrongAns3' => $this->input->post('myInputs[]'),
-			'wrongAns4' => $this->input->post('myInputs[]'),
-			'wrongAns5' => $this->input->post('myInputs[]'),
+			'wrongans1' => $this->input->post('wrong1'),
+			'wrongans2' => $this->input->post('wrong2'),
+			'wrongans3' => $this->input->post('wrong3'),
+			'wrongans4' => $this->input->post('wrong4'),
+			'wrongans5' => $this->input->post('wrong5'),
+			'examID' => $this->input->post('exam')
 		);
 		
 		$this->load->model('Question');							//load model
@@ -246,40 +240,48 @@ class Admin extends CI_controller {
 	}
 	
 	public function questionFormChange(){
-		$newData = array(										//place form-data in array
+		$questionData = array(										//place form-data in array
 			'casus' => $this->input->post('casusText'),
-			'correctans1' => $this->input->post('myInputs1'),
-			'correctans2' => $this->input->post('myInputs2'),
-			'correctans3' => $this->input->post('myInputs3'),
+			'correctans1' => $this->input->post('correct1'),
+			'correctans2' => $this->input->post('correct2'),
+			'correctans3' => $this->input->post('correct3'),
 			'points' => $this->input->post('points'),
 			'question' => $this->input->post('question'),
 			'type' => $this->input->post('questionType'),
-			'wrongAns1' => $this->input->post('myInputs4'),
-			'wrongAns2' => $this->input->post('myInputs5'),
-			'wrongAns3' => $this->input->post('myInputs[]'),
-			'wrongAns4' => $this->input->post('myInputs[]'),
-			'wrongAns5' => $this->input->post('myInputs[]'),
+			'wrongans1' => $this->input->post('wrong1'),
+			'wrongans2' => $this->input->post('wrong2'),
+			'wrongans3' => $this->input->post('wrong3'),
+			'wrongans4' => $this->input->post('wrong4'),
+			'wrongans5' => $this->input->post('wrong5'),
+			'examID' => $this->input->post('exam')
+
 		);
 		
 		$this->load->model('Question');						//load model
-		$this->Question->questionUpdate($newData, $id);				//send $newData to questionUpdate-method
+		$this->Question->questionUpdate($questionData);				//send $newData to questionUpdate-method
 
 
 	}
 	
 	//load question with specific id, and delete it (in progress)
-	function deleteQuestion(){ 
-		$id = $this->uri->segment(3);
+	function deleteQuestion(){
 		
 		$this->load->view('adminHeader');
-		$this->load->view('deleteConfirmQuestion', $id);
-		$this->load->view('footer');
 		
-		if(isset ($_POST['submit'])){
+		//if pressed on delete button in examOverview, get the id from POST
+		if(isset ($_POST['submit'])){		
+			$id=$_POST['id'];
 			$this->load->model('question');
 			$this->question->questionDelete($id);
+			$this->addExam();			//vervangen door redirect
 		}
-		$this->examOverview();				//find out how to go back to previous page (addExam or updateExam)
+		//if the page is reached via url, get id from url
+		else{
+			$id = $this->uri->segment(3);
+			$this->load->view('deleteConfirmQuestion', $id);
+		}
+		$this->load->view('footer');
+
 	}
 	
 	

@@ -5,19 +5,22 @@
 	<table class="table table-bordered">
 	<th>Exam Name</th><th>Duration</th><th>Actions</th>
 	<?php
-		foreach($examData as $row){
+	foreach($examData as $row){
 		echo "<tr><td>" . $row->name ."</td>";
 		echo "<td>" . $row->duration ."</td>";
 		echo "
 		<td>
-			<a href='". base_url() ."index.php/Admin/deleteExam/". $row->id ."' class='btn btn-default btn-sm'>
+			<a href='". base_url() ."index.php/Admin/deleteExam/". $row->examID ."' class='btn btn-default btn-sm'>
 			<span class='glyphicon glyphicon-trash'></span> Delete</a>
 			
-			<a href=" .base_url(). "index.php/Admin/updateExam/". $row->id ." class='btn btn-default btn-sm'>
+			<a href=" .base_url(). "index.php/Admin/updateExam/". $row->examID ." class='btn btn-default btn-sm'>
 			<span class='glyphicon glyphicon-edit'></span> Edit</a>
 			
-			<a href=" .base_url(). "index.php/Admin/viewExam/". $row->id ." class='btn btn-default btn-sm'>
-			<span class='glyphicon glyphicon-eye-open'></span> View</a>		
+			<a href=" .base_url(). "index.php/Admin/viewExam/". $row->examID ." class='btn btn-default btn-sm'>
+			<span class='glyphicon glyphicon-eye-open'></span> View</a>
+			
+			<a href=" .base_url(). "index.php/Admin/questionOverview/". $row->examID ." class='btn btn-default btn-sm'>
+			<span class='glyphicon glyphicon-list'></span> Questions</a>	
 		</td>
 		</tr>";
 	}

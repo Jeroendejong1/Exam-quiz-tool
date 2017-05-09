@@ -1,8 +1,7 @@
-
 <h1>Instructions</h1>
 
 <p>
-	You have selected the "..." exam quiz.
+	You have selected the "<strong>...</strong>" exam quiz.
 </p>
 
 <p>
@@ -16,9 +15,11 @@
 	and which of them you have checked.
 </p>
 
+<form action="<?php echo base_url();?>index.php/Start/question">
+<input type="submit" value="Start Exam" class="btn btn-success">
 
-<a href="<?php echo base_url();?>index.php/Start/question" class="btn btn-success">Start exam</a>
-<a href="question_view.php" class="btn btn-danger">Return to overview</a>
+<a href="<?php echo base_url();?>index.php/Start/home" class="btn btn-danger">Return to overview</a>
+</form>
 </div>
 </body>
 </html>

@@ -1,3 +1,4 @@
+
 <form method="post" action="<?= base_url();?>index.php/admin/deleteExam">
 	<p> Delete this exam with all it's questions? </p>
 	<input type="hidden" name="id" value="<?php echo $id; ?>">

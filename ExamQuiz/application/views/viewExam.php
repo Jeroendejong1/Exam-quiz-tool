@@ -1,7 +1,7 @@
 <?php 
 
 foreach ($examData as $row){
-	if($row->id == $this->uri->segment(3)){
+	if($row->examID == $this->uri->segment(3)){
 		$name = $row->name;
 		$duration = $row->duration;
 	}

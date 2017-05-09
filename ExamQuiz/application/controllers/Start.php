@@ -1,20 +1,36 @@
 <?php
 
-//sources:
-//https://code.tutsplus.com/tutorials/an-introduction-to-views-templating-in-codeigniter--net-25648
 
 //comments:
 //make sure base_url is always loaded by adding url to helper-array in autoload-file.
 
 class Start extends CI_controller {
 	
-	public function index(){					//by visiting index.php/start/index
-		$data = array(
-			'title'	=>	'Select exam'			//give variable $title the value "Select exam"
+	function __construct(){
+	parent::__construct();
+	$this->load->library('session');
+	}
+	
+	public function home(){
+		$title = 'Select exam';
+		
+		$this->load->model('Exam');
+		$data['examData'] = $this->Exam->getExamData();
+		
+		$this->load->view('header', $title);
+		$this->load->view('home',$data);
+		$this->load->view('footer');
+		
+		$examName = array(
+			'examName' => $_POST['exam']
 		);
-		$this->load->view('header', $data);		//load the header and include the variables inside $data array
-		$this->load->view('home', $data); 		//load home.php in views-folder + $data array
-		$this->load->view('footer');			//load the footer	
+		$this->session->set_flashdata($examName);
+		
+		if(isset($_POST['submit'])){
+			$this->session->flashdata($examName);
+			redirect('Start/instructions/');
+		}
+		
 	}
 
 	public function instructions(){
@@ -25,7 +41,7 @@ class Start extends CI_controller {
 	
 	public function question(){	
 		$data = array(
-			'question' => 'testtext' //hier koppeling maken met model
+			'question' => 'testtext'
 		);
 		$this->load->view('header');
 		$this->load->view('question', $data);

@@ -1,7 +1,7 @@
 <?php 
 
 foreach ($questionData as $row){
-	if($row->id == $this->uri->segment(3)){
+	if($row->questionID == $this->uri->segment(3)){
 		$question = $row->question;
 		$points = $row->points;
 		$type = $row->type;

@@ -12,4 +12,4 @@
 
 <div class="container">
 
-<nav><a href="<?= base_url();?>index.php/admin/logout">Logout</a></nav>
+<nav><a href="<?= base_url();?>index.php/Login/logout" style="float: right;">Logout</a></nav>

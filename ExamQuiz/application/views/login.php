@@ -5,9 +5,9 @@
         <div class="row">
             <div class="col-md-12">
                 <h3>Administrator login</h3>
-				<form method="post" action="<?php echo base_url();?>index.php/admin/signin">                                             
+				<form method="post" action="<?php echo base_url();?>index.php/Login/signin">                                             
 					<div class="form-group">                       
-						<label for="userName">Email</label> <input requiered type="email" class="form-control" id="email" name="email" value="<?php echo set_value('email'); ?>">
+						<label for="email">Email</label> <input requiered type="email" class="form-control" id="email" name="email" value="<?php echo set_value('email'); ?>">
 						<span><?php echo form_error('email'); ?></span>                  
 					</div>
   
@@ -16,7 +16,7 @@
 						<span class="invalidInput"><?php echo form_error('password'); ?></span>
 					</div>
 					<button class="btn btn-success" type="submit">Login</button>
-					<a class="btn btn-danger" href= "<?php echo base_url();?>index.php/Start/index">Return</a>
+					<a class="btn btn-danger" href= "<?php echo base_url();?>index.php/Start/home">Return</a>
 				</form>
 			</div>
         </div>
