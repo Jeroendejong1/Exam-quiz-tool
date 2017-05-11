@@ -4,6 +4,7 @@ foreach ($examData as $row){
 	if($row->examID == $this->uri->segment(3)){
 		$name = $row->name;
 		$duration = $row->duration;
+		$requiredScore=$row->requiredScore;
 	}
 }
 
@@ -12,7 +13,7 @@ foreach ($examData as $row){
 
 <table class="table table-bordered">
 	<tr>
-		<th>Title</th>
+		<th>Title:</th>
 	</tr>
 	<tr>
 		<td><?= $name; ?></td>
@@ -21,23 +22,17 @@ foreach ($examData as $row){
 		<td></td>
 	</tr>
 	<tr>
-		<th>Duration</th>
+		<th>Duration:</th>
 	</tr>
 	<tr>
-		<td><?= $duration; ?> </td>
+		<td><?= $duration; ?> minutes </td>
 	</tr>
 	<tr>
-		<th>Subjects</th>
+		<th>Required score:</th>
 	</tr>
-	<?php
-	// foreach(){
-		
-	//	echo "<tr><td>".."</td></tr>"
-		
-	//}
-	
-	
-	?>
+	<tr>
+		<td><?= $requiredScore; ?>% </td>
+	</tr>
 </table>
 
 <a href="<?php echo base_url();?>index.php/Admin/examOverview" class="btn btn-primary">Return to overview</a>

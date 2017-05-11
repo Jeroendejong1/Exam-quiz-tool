@@ -15,17 +15,17 @@ class Exam extends CI_Model{
 	}
 	
 	//Update exam data 
-	public function examUpdate($newData, $id){
+	public function examUpdate($data,$id){
 		$this->db->where('examID',$id);
-		$this->db->update('exam',$newData);
+		$this->db->update('exam',$data);
 	}
 
 	//Delete exam data
 	public function examDelete($id){
 		$this->db->where('examID',$id);
 		$this->db->delete('exam');
-		//$this->db->where('exam', ...);
-		//$this->db->delete('question')
+		$this->db->where('examID', $id);
+		$this->db->delete('question');
 	}
 }
 

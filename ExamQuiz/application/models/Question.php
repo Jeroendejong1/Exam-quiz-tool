@@ -1,7 +1,4 @@
 <?php
-//TODO check for better function instead of shuffle
-
-
 class Question extends CI_Model{
 	
 	//INSERT INTO statement
@@ -10,20 +7,26 @@ class Question extends CI_Model{
 	}
 	
 	//SELECT FROM statement
-	public function getQuestionData($id){
-		$this->db->where('ExamID',$id);
+	public function getQuestion(){
+	//	$this->db->where('ExamID',$examId);
+		$query = $this->db->get('question');
+		return $query->result();
+	}
+	
+	//SELECT FROM without examid
+	public function getQuestion2(){
 		$query = $this->db->get('question');
 		return $query->result();
 	}
 	
 	//UPDATE WHERE statement
-	public function questionUpdate($newData, $id){
+	public function questionUpdate($data, $id){
 		$this->db->where('questionID',$id);
-		$this->db->update('question',$newData);
+		$this->db->update('question',$data);
 	}	
 	
 	//DELETE WHERE statement
-	public function questionDelete($id){
+	public function questionDelete($questionId){
 		$this->db->where('questionID',$id);
 		$this->db->delete('question');
 	}

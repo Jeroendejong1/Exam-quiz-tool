@@ -1,33 +1,30 @@
-	<?php $id = $this->uri->segment(3);
+<?php $id = $this->uri->segment(3);
 
-		foreach ($questionData as $row){
-			if($row->questionID == $this->uri->segment(3)){
-				$casus = $row->casusText;
-				$correctans1 = $row->correct1;
-				$correctans2 = $row->correct2;
-				$correctans3 = $row->correct3;
-				$points = $row->points;
-				$question = $row->question;
-				$type = $row->questionType;
-				$wrongAns1 = $row->wrong1;
-				$wrongAns2 = $row->wrong2;
-				$wrongAns3 = $row->wrong3;
-				$wrongAns4 = $row->wrong4;
-				$wrongAns5 = $row->wrong5;
-			}
+	foreach ($questionData as $row){
+		if($row->questionID == $id){
+			$casus = $row->casus;
+			$correctans1 = $row->correctans1;
+			$correctans2 = $row->correctans2;
+			$correctans3 = $row->correctans3;
+			$points = $row->points;
+			$question = $row->question;
+			$type = $row->type;
+			$wrongAns1 = $row->wrongans1;
+			$wrongAns2 = $row->wrongans2;
+			$wrongAns3 = $row->wrongans3;
+			$wrongAns4 = $row->wrongans4;
+			$wrongAns5 = $row->wrongans5;
 		}
-	?>
+	}
+?>
 
-
+	<form method="post" action="<?php echo base_url();?>index.php/admin/questionFormUpdate">
 	<div class="col-lg-6">
 		<fieldset>
 		<legend>General settings</legend>
 			<div class= "col-lg-12">
 			<label for="casusText">Add casus-text (optional):</label>
 			<textarea class="form-control" id="casusText" value="<?=$casus ?>" name="casusText"></textarea>
-			<br>
-			<label for="casusFile">Add casus-image (optional):</label>
-			<input type="file" id="casusFile" name="casusFile">
 			<br>
 			<label for="question">Add question-text:</label>
 			<input type="text" class="form-control" id="question" name="question" value="<?=$question ?>" requiered>
@@ -88,3 +85,4 @@
 		</fieldset>
 		</div>
 	</div>
+	</form>

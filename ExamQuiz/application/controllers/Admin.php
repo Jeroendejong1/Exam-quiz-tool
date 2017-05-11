@@ -40,7 +40,7 @@ class Admin extends CI_controller {
 		$data = array(
 			'name' => $this->input->post('examName'),
 			'duration' => $this->input->post('examTime'),
-			'requieredScore' => $this->input->post('requieredScore')
+			'requiredScore' => $this->input->post('requiredScore')
 		);
 		
 		$this->load->model('Exam');
@@ -73,26 +73,15 @@ class Admin extends CI_controller {
 		$data = array(
 			'name' => $this->input->post('examName'),
 			'duration' => $this->input->post('examTime'),
-			'requieredScore' => $this->input->post('requieredScore')
+			'requiredScore' => $this->input->post('requiredScore'),
 		);
+		
+		$id = $this->input->post('examId');
+		
 		$this->load->model('Exam');
 		$this->Exam->examUpdate($data,$id);
 
-		$this->examOverview();
-	}
-	
-	public function examFormChange(){
-		
-		$newData = array(										//place form-data in array
-			'name' => $this->input->post('examName'),
-			'duration' => $this->input->post('examTime'),
-			'requieredScore' => $this->input->post('requieredScore')
-		);
-		
-		$this->load->model('Exam');							//load model
-		$this->Exam->examUpdate($newData, $id);				//send $newData to examUpdate-method
-
-		$this->examOverview();								//go to examOverview
+		redirect('Admin/examOverview');
 	}
 	
 	//load exam with specific id, and delete it (in progress)
@@ -105,7 +94,7 @@ class Admin extends CI_controller {
 			$id=$_POST['id'];
 			$this->load->model('exam');
 			$this->exam->examDelete($id);
-			$this->examOverview();			//vervangen door redirect
+			redirect('Admin/examOverview');
 		}
 		//if the page is reached via url, get id from url
 		else{
@@ -134,28 +123,28 @@ class Admin extends CI_controller {
 //-------------------------------------------Question methods --------------------------------------------------------------------
 
 	public function questionOverview(){
-		
-		$this->load->model('Question');
+				$this->load->model('Question');
 		$data =array( 
-			'id' => $this->uri->segment(3),
 			'questionData' => $this->getQuestionData()
-			);
+		);
 		$this->load->view('adminHeader');
 		$this->load->view('questionOverview',$data);
 		$this->load->view('footer');
-		
 	}
 	
-
-
 	private function getQuestionData(){
+		//$questionId = $this->uri->segment(3);
 		$this->load->model('Question');
-		$result = $this->Question->getQuestionData($id);
+		$result = $this->Question->getQuestion();
 		return $result;
 	}
 
 	public function addQuestion(){
+		
 		$questionType = $this->uri->segment(3);
+		$data= array(
+			'examId' => $this->uri->segment(4)
+		);
 		
 		if($questionType=="openEnded"){
 			$options = array(
@@ -195,7 +184,7 @@ class Admin extends CI_controller {
 		}
 		
 		$this->load->view('adminHeader');
-		$this->load->view('addQuestion',$options);
+		$this->load->view('addQuestion',$options, $data);
 		$this->load->view('footer');	
 	}
 
@@ -206,10 +195,48 @@ class Admin extends CI_controller {
 		//get data for question table
 		$this->load->model('Question');
 		$data['questionData'] = $this->getQuestionData();		
-			
+		
+		$questionType= $data['type'];		//fix
+		if($questionType=="openEnded"){
+			$options = array(
+				'c2'=> "optional",
+				'c3'=> "optional",
+				'w1'=> "disabled",
+				'w2'=> "disabled",
+				'w3'=> "disabled",
+				'w4'=> "disabled",
+				'w5'=> "disabled",
+				'w6'=> "disabled"
+			);
+		}
+		elseif($questionType=="multipleChoice"){
+			$options = array(
+				'c2'=>"disabled",
+				'c3'=>"disabled",
+				'w1'=>"required",
+				'w2'=>"optional",
+				'w3'=>"optional",
+				'w4'=>"optional",
+				'w5'=>"optional",
+				'w6'=>"optional"
+			);
+		}
+		elseif($questionType=="checkbox"){
+			$options =array(
+				'c2'=>"optional",
+				'c3'=>"optional",
+				'w1'=>"required",
+				'w2'=>"optional",
+				'w3'=>"optional",
+				'w4'=>"optional",
+				'w5'=>"optional",
+				'w6'=>"optional"
+			);
+		}
+		
 		//load updateQuestion page
 		$this->load->view('adminHeader');
-		$this->load->view('updateQuestion',$data);
+		$this->load->view('updateQuestion',$data, $options);
 		$this->load->view('footer');
 	}
 	
@@ -230,17 +257,17 @@ class Admin extends CI_controller {
 			'wrongans3' => $this->input->post('wrong3'),
 			'wrongans4' => $this->input->post('wrong4'),
 			'wrongans5' => $this->input->post('wrong5'),
-			'examID' => $this->input->post('exam')
+			'examID' => $this->input->post('exam'),
+			'subject' => $this->input->post('subject')
 		);
 		
 		$this->load->model('Question');							//load model
 		$this->Question->insertIntoQuestion($data);				//send $data to insertIntoQuestion-method
-
-
+		redirect('/Admin/examOverview');
 	}
 	
-	public function questionFormChange(){
-		$questionData = array(										//place form-data in array
+	public function questionFormUpdate(){
+		$data = array(										//place form-data in array
 			'casus' => $this->input->post('casusText'),
 			'correctans1' => $this->input->post('correct1'),
 			'correctans2' => $this->input->post('correct2'),
@@ -253,14 +280,15 @@ class Admin extends CI_controller {
 			'wrongans3' => $this->input->post('wrong3'),
 			'wrongans4' => $this->input->post('wrong4'),
 			'wrongans5' => $this->input->post('wrong5'),
-			'examID' => $this->input->post('exam')
-
+			'examID' => $this->input->post('exam'),
+			'subject' => $this->input->post('subject')
 		);
+		$id = $this->input->post('questionId');
 		
 		$this->load->model('Question');						//load model
-		$this->Question->questionUpdate($questionData);				//send $newData to questionUpdate-method
+		$this->Question->questionUpdate($data,$id);				//send $newData to questionUpdate-method
 
-
+		redirect('Admin/examOverview');
 	}
 	
 	//load question with specific id, and delete it (in progress)
@@ -288,11 +316,17 @@ class Admin extends CI_controller {
 	//view data of question with specific id (read only) (in progress) 
 	function viewQuestion(){
 		$this->load->model('question');
-		$data['questionData'] = $this->getQuestionData();	
+		$data['questionData'] = $this->getQuestionData2();	
 		
 		$this->load->view('adminHeader');
 		$this->load->view('viewQuestion', $data);
 		$this->load->view('footer');	
+	}
+	
+	private function getQuestionData2(){
+		$this->load->model('Question');
+		$result = $this->Question->getQuestion2();
+		return $result;
 	}
 	
 }

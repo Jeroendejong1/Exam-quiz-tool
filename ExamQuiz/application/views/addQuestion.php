@@ -1,6 +1,8 @@
-
+<?php $examId =$this->uri->segment(4); ?>
+<?php $questionType =$this->uri->segment(3); ?>
 <form method="post" id="achievementf1" action="<?php echo base_url();?>index.php/Admin/questionFormInput">
-<input type="hidden" name="exam" id="<?= $id; ?>">
+<input type="hidden" name="exam" value="<?= $examId; ?>">
+<input type="hidden" name="type" value="<?= $questionType; ?>">
 <div class="col-lg-6">
 	<fieldset>
 	<legend>General settings</legend>
@@ -12,10 +14,10 @@
 		<input type="file" id="casusFile" name="Image">
 		<br>
 		<label for="question">Add question-text:</label>
-		<input type="text" class="form-control" id="question" name="question" requiered>
+		<input type="text" class="form-control" id="question" name="question" required>
 		<br>
 		<label for="question">Points for this question: </label>
-		<input type="number" class="form-control" id="points" name="points" max="6" min="1" requiered>
+		<input type="number" class="form-control" id="points" name="points" max="6" min="1" required>
 		</div>
 	</fieldset>
 	<br>
@@ -23,12 +25,7 @@
 	<fieldset>
 	<legend>Add to subject</legend>
 	<div class= "col-lg-12">
-		<select class="custom-select form-control col-lg-3" id="select-subject">
-		  <option selected>Choose a subject</option>
-		  <option value="1">One</option>
-		  <option value="2">Two</option>
-		  <option value="3">Three</option>
-		</select>
+		<input type="text" required name="subject" class="form-control" id="select-subject">
 	</div>
 	</fieldset>
 </div>
