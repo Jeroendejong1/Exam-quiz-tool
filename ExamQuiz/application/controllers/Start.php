@@ -21,23 +21,34 @@ class Start extends CI_controller {
 		$this->load->view('home',$data);
 		$this->load->view('footer');
 		
-		$examName = array(
-			'examName' => $_POST['exam']
-		);
-		$this->session->set_flashdata($examName);
+		$_SESSION['examId'] = $this->input->post('exam');
 		
 		if(isset($_POST['submit'])){
-			$this->session->flashdata($examName);
-			redirect('Start/instructions/');
+			redirect('Start/instructions');
 		}
-		
 	}
 
 	public function instructions(){
+		$this->load->model('Exam');
+		$data['examData'] = $this->Exam->getExamData();
+		
 		$this->load->view('header');
-		$this->load->view('examInstructions');
+		$this->load->view('examInstructions', $data);
 		$this->load->view('footer');	
 	}
+	
+	public function questionPage(){
+		$this->load->model('Exam');
+		$data['examData'] = $this->Exam->getExamData();
+		
+		$this->load->model('Question');
+		$data['questionData'] = $this->Question->getQuestion();
+		
+		$this->load->view('header');
+		$this->load->view('questionPage', $data);
+		$this->load->view('footer');
+	}
+	
 	
 	public function question(){	
 		$data = array(

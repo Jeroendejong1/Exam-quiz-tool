@@ -13,11 +13,11 @@ foreach ($examData as $row){
 
 <h1>Update exam</h1>
 
-	<form method="post" id="achievementf1" action="<?php echo base_url();?>index.php/admin/examFormUpdate">
+	<form method="post" action="<?php echo base_url();?>index.php/admin/examFormUpdate">
 		<fieldset>
 		<legend>Settings</legend>
 			<div class= "col-lg-6">
-				<input type="hidden" name="<?= $examId ?>">
+				<input type="hidden" name="examId" value="<?= $examId ?>">
 				
 				<label for="question">Name of the exam:</label>
 				<input type="text" class="form-control" value="<?= $name; ?>" id="examName" name="examName" requiered>

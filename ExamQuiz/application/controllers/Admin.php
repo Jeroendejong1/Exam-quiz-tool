@@ -80,7 +80,7 @@ class Admin extends CI_controller {
 		
 		$this->load->model('Exam');
 		$this->Exam->examUpdate($data,$id);
-
+		
 		redirect('Admin/examOverview');
 	}
 	
@@ -133,7 +133,6 @@ class Admin extends CI_controller {
 	}
 	
 	private function getQuestionData(){
-		//$questionId = $this->uri->segment(3);
 		$this->load->model('Question');
 		$result = $this->Question->getQuestion();
 		return $result;
@@ -196,7 +195,9 @@ class Admin extends CI_controller {
 		$this->load->model('Question');
 		$data['questionData'] = $this->getQuestionData();		
 		
-		$questionType= $data['type'];		//fix
+		$this->question->getQuestion;
+		$questionType = getQuestion()->type;
+				
 		if($questionType=="openEnded"){
 			$options = array(
 				'c2'=> "optional",
@@ -251,7 +252,7 @@ class Admin extends CI_controller {
 			'correctans3' => $this->input->post('correct3'),
 			'points' => $this->input->post('points'),
 			'question' => $this->input->post('question'),
-			'type' => $this->input->post('questionType'),
+			'type' => $this->input->post('type'),
 			'wrongans1' => $this->input->post('wrong1'),
 			'wrongans2' => $this->input->post('wrong2'),
 			'wrongans3' => $this->input->post('wrong3'),
@@ -274,7 +275,7 @@ class Admin extends CI_controller {
 			'correctans3' => $this->input->post('correct3'),
 			'points' => $this->input->post('points'),
 			'question' => $this->input->post('question'),
-			'type' => $this->input->post('questionType'),
+			'type' => $this->input->post('type'),
 			'wrongans1' => $this->input->post('wrong1'),
 			'wrongans2' => $this->input->post('wrong2'),
 			'wrongans3' => $this->input->post('wrong3'),
@@ -301,16 +302,17 @@ class Admin extends CI_controller {
 			$id=$_POST['id'];
 			$this->load->model('question');
 			$this->question->questionDelete($id);
-			$this->addExam();			//vervangen door redirect
+			redirect('Admin/examOverview');
 		}
 		//if the page is reached via url, get id from url
 		else{
-			$id = $this->uri->segment(3);
-			$this->load->view('deleteConfirmQuestion', $id);
+			$data =array( 'id' => $this->uri->segment(3));
+			$this->load->view('deleteConfirmQuestion', $data);
 		}
 		$this->load->view('footer');
 
 	}
+
 	
 	
 	//view data of question with specific id (read only) (in progress) 

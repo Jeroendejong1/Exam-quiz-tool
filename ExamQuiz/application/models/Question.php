@@ -27,7 +27,7 @@ class Question extends CI_Model{
 	
 	//DELETE WHERE statement
 	public function questionDelete($questionId){
-		$this->db->where('questionID',$id);
+		$this->db->where('questionID',$questionId);
 		$this->db->delete('question');
 	}
 	

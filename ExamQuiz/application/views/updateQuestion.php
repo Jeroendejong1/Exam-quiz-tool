@@ -23,6 +23,10 @@
 		<fieldset>
 		<legend>General settings</legend>
 			<div class= "col-lg-12">
+			
+			<input type="hidden" name="type" value="<?= $type ?>">
+			<input type="hidden" name="id" value="<?= $id ?>">
+			
 			<label for="casusText">Add casus-text (optional):</label>
 			<textarea class="form-control" id="casusText" value="<?=$casus ?>" name="casusText"></textarea>
 			<br>
