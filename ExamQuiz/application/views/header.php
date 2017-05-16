@@ -9,5 +9,6 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/styleAdd.css">
 </head>
 <body>
-
+<br>
+<br>
 <div class="container">

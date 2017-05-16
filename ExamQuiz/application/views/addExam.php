@@ -10,7 +10,7 @@
 				<br>
 				<br>
 				<label for="examTime">Exam time (in minutes):</label><br>
-				<input type="number" class="form-control" id="examTime" name="examTime">
+				<input type="number" class="form-control" id="examTime" min="1" max="300" name="examTime">
 				<br><br>
 				<label for="examTime">Requiered score (percentage):</label><br>
 				<input type="number" class="form-control" max="100" min="0" id="requieredScore" name="requieredScore">

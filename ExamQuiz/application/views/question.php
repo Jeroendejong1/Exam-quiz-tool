@@ -1,38 +1,47 @@
-<!doctype html>
-<html>
-<head>
-<title>Vraag</title>
-<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../css/personalStyle.css">
-<meta charset="UTF-8">
-<script>
-function myFunction() {
-    confirm("Press a button!");
-}
+<?php 
+$currentIndex = $this->uri->segment(3);
+$next = $currentIndex +1;
+$previous = $currentIndex-1;
+?>
 
-</script>
-</head>
-<body>
-<div class="container">
-	<a class="btn btn-default" href="question_page.php">Overview questions</a>
-	<a class="btn btn-danger" href="<?php echo base_url();?>index.php/Start/index" onclick = "confirm()">Stop exam</a>
-	<div class="question">
-		<form method="POST">
-			<fieldset>
-			<legend> Question 1/50 (example)</legend>
-			<p> <?  ?> </p>
-			<p> <?  ?> </p>
-			<hr>
-
-			<hr>
-			<input type="checkbox" name="hold">Check question later
-			<br><br>
-			</fieldset>
-		</form>
-		<a class="btn btn-default" href="question_page.php">Previous</a>
-		Tijd over: <span id="demo"></span>
-		<a class="btn btn-default" href="question_page.php" style="float:right">Next</a>
-	</div>
+<a class="btn btn-default" href="question_page.php">Overview questions</a>
+<a class="btn btn-danger" href="<?php echo base_url();?>index.php/Start/index" onclick = "confirm()">Stop exam</a>
+<div class="question">
+	<form method="POST">
+		<hr>
+			<b>Question:</b><br>
+			<?=$row->question?><br><br>
+			<div class='panel panel-primary'>
+				<div class='panel-heading'>Casus:</div>
+				<div class='panel-body'><?= $row->casus ?></div>
+			</div>
+		<hr>
+		<?php
+		if($row->type == "openEnded"){
+			echo "
+			<b>Give your answer:</b><br><br>
+			<input type='text' class='form-control' placeholder='Your answer' name='".$row->questionID."'><br>
+			";
+		}
+		elseif($row->type == "multipleChoice"){
+			echo "<b>Select your answer:</b><br>";
+			foreach ($answers as $key => $answer){
+				if($answer != ""){
+					echo 	"<div class='radio'><label><input name='options".$row->questionID."' type='radio'> ". $answer."</label><br>";
+				}
+			}
+		}
+		elseif($row->type == "checkbox"){
+			echo "<b>Select your answer(s):</b><br>";
+			foreach ($answers as $key => $answer){
+				if($answer != ""){
+					echo "<label class='checkbox-inline'> <input type='checkbox'>". $answer."</label><br>";
+				}
+			}
+		}
+		?>
+	</form>
+	<a class="btn btn-default" href="<?= base_url();?>index.php/Start/question/<?= $previous ?>">Previous</a>
+	Tijd over: <span id="demo"></span>
+	<a class="btn btn-default" href="<?= base_url();?>index.php/Start/question/<?= $next ?>" style="float:right">Next</a>
 </div>
-</body>
-</html>

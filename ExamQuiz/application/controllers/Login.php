@@ -10,7 +10,8 @@ class Login extends CI_Controller{
 	}
 
 	public function index(){
-		$this->load->view('header');
+		$data['title'] = 'Login';
+		$this->load->view('header',$data);
 		$this->load->view('login');
 		$this->load->view('footer');
 	}
@@ -65,7 +66,7 @@ class Login extends CI_Controller{
 	// log out and destroy session
 	function logout(){
 		$this->session->sess_destroy();
-		redirect('/Start/home');
+		redirect('/Start/index');
 	}
 	
 }

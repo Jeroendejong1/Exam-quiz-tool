@@ -1,7 +1,7 @@
-<?php $id = $this->uri->segment(3);
+<?php $questionId = $this->uri->segment(3);
 
 	foreach ($questionData as $row){
-		if($row->questionID == $id){
+		if($row->questionID == $questionId){
 			$casus = $row->casus;
 			$correctans1 = $row->correctans1;
 			$correctans2 = $row->correctans2;
@@ -14,8 +14,10 @@
 			$wrongAns3 = $row->wrongans3;
 			$wrongAns4 = $row->wrongans4;
 			$wrongAns5 = $row->wrongans5;
+			$subject = $row->subject;
 		}
 	}
+	
 ?>
 
 	<form method="post" action="<?php echo base_url();?>index.php/admin/questionFormUpdate">
@@ -25,7 +27,7 @@
 			<div class= "col-lg-12">
 			
 			<input type="hidden" name="type" value="<?= $type ?>">
-			<input type="hidden" name="id" value="<?= $id ?>">
+			<input type="hidden" name="id" value="<?= $questionId ?>">
 			
 			<label for="casusText">Add casus-text (optional):</label>
 			<textarea class="form-control" id="casusText" value="<?=$casus ?>" name="casusText"></textarea>
@@ -40,15 +42,10 @@
 		<br>
 		<br>
 		<fieldset>
-		<legend>Select subject and exam</legend>
-		<div class= "col-lg-12">
-			<select class="custom-select form-control col-lg-3" id="select-subject">
-			  <option selected>Choose a subject</option>
-			  <option value="1">One</option>
-			  <option value="2">Two</option>
-			  <option value="3">Three</option>
-			</select>
-		</div>
+		<legend>Add to subject</legend>
+			<div class= "col-lg-12">
+				<input type="text" required name="subject" class="form-control" id="select-subject" value="<?=$subject ?>">
+			</div>
 		</fieldset>
 	</div>
 	<div class="col-lg-6">
@@ -58,11 +55,9 @@
 		<label for="correct1">Correct answer 1:</label>
 		<input type="text" class="form-control" id="correct1" value="<?=$correctans1 ?>" name="correct1" placeholder="Required" required><br>
 		<label for="correct1">Correct answer 2:</label>
-		<input type="text" class="form-control" id="correct2" value="<?=$correctans2 ?>" name="correct2" placeholder="<?=$c2 ?>" <?=$c2 ?>><br>
+		<input type="text" class="form-control" id="correct2" value="<?=$correctans2 ?>" name="correct2" placeholder="<?=$options['c2'] ?>" <?=$options['c2'] ?>><br>
 		<label for="correct1">Correct Answer 3:</label>
-		<input type="text" class="form-control" id="correct3" value="<?=$correctans3 ?>" name="correct3" placeholder="<?=$c3 ?>" <?=$c3 ?>><br>
-	<br>
-	<br>
+		<input type="text" class="form-control" id="correct3" value="<?=$correctans3 ?>" name="correct3" placeholder="<?=$options['c3'] ?>" <?=$options['c3'] ?>><br>
 	<div>
 	</fieldset>
 	<br>
@@ -71,17 +66,15 @@
 	<legend>Add wrong answer(s)</legend>
 	<div class= "col-lg-12">
 		<label for="wrong1">Wrong answer 1:</label>
-		<input type="text" class="form-control" id="wrong1" value="<?=$wrongAns1 ?>" name="wrong1" placeholder="<?=$w1 ?>" <?=$w1 ?>><br>
+		<input type="text" class="form-control" id="wrong1" value="<?=$wrongAns1 ?>" name="wrong1" placeholder="<?=$options['w1'] ?>" <?=$options['w1'] ?>><br>
 		<label for="wrong2">Wrong answer 2:</label>
-		<input type="text" class="form-control" id="wrong2" value="<?=$wrongAns2 ?>" name="wrong2" placeholder="<?=$w2 ?>" <?=$w2 ?>><br>
+		<input type="text" class="form-control" id="wrong2" value="<?=$wrongAns2 ?>" name="wrong2" placeholder="<?=$options['w2'] ?>" <?=$options['w2'] ?>><br>
 		<label for="wrong1">Wrong answer 3:</label>
-		<input type="text" class="form-control" id="wrong3" value="<?=$wrongAns3 ?>" name="wrong3" placeholder="<?=$w3 ?>" <?=$w3 ?>><br>
+		<input type="text" class="form-control" id="wrong3" value="<?=$wrongAns3 ?>" name="wrong3" placeholder="<?=$options['w3'] ?>" <?=$options['w3'] ?>><br>
 		<label for="wrong2">Wrong answer 4:</label>
-		<input type="text" class="form-control" id="wrong4" value="<?=$wrongAns4 ?>" name="wrong4" placeholder="<?=$w4 ?>" <?=$w4 ?>><br>
+		<input type="text" class="form-control" id="wrong4" value="<?=$wrongAns4 ?>" name="wrong4" placeholder="<?=$options['w4'] ?>" <?=$options['w4'] ?>><br>
 		<label for="wrong1">Wrong answer 5:</label>
-		<input type="text" class="form-control" id="wrong5" value="<?=$wrongAns5 ?>" name="wrong5" placeholder="<?=$w5 ?>" <?=$w5 ?>><br>
-		<label for="wrong2">Wrong answer 6:</label>
-		<input type="text" class="form-control" id="wrong6" value="<?=$wrongAns6 ?>" name="wrong6" placeholder="<?=$w6 ?>" <?=$w6 ?>><br>
+		<input type="text" class="form-control" id="wrong5" value="<?=$wrongAns5 ?>" name="wrong5" placeholder="<?=$options['w5'] ?>" <?=$options['w5'] ?>><br>
 	<br>
 	<br>
 		<input type="submit" class="btn btn-success" name="Submit" value="Save question">

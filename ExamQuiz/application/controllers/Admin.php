@@ -21,8 +21,9 @@ class Admin extends CI_controller {
 	public function examOverview(){
 		$this->load->model('Exam');
 		$data['examData'] = $this->getExamData();	
+		$data['title'] = 'exam Overview';
 		
-		$this->load->view('adminHeader');
+		$this->load->view('adminHeader',$data);
 		$this->load->view('examOverview',$data);
 		$this->load->view('footer');
 	}
@@ -30,7 +31,9 @@ class Admin extends CI_controller {
 	//placed 'database' in autoload libraries 
 	//addExam creates exam and places it into DB
 	public function addExam(){
-		$this->load->view('adminHeader');
+		$data['title'] = 'Add exam';
+		
+		$this->load->view('adminHeader',$data);
 		$this->load->view('addExam');
 		$this->load->view('footer');
 	}
@@ -40,7 +43,7 @@ class Admin extends CI_controller {
 		$data = array(
 			'name' => $this->input->post('examName'),
 			'duration' => $this->input->post('examTime'),
-			'requiredScore' => $this->input->post('requiredScore')
+			'requiredScore' => $this->input->post('requiredScore'),
 		);
 		
 		$this->load->model('Exam');
@@ -58,12 +61,15 @@ class Admin extends CI_controller {
 
 	//updateExam loads examdata inside form, and makes it possible to change it (in progress)
 	public function updateExam(){
+		
+		$data['title'] = 'Update Exam';
+		
 		//get data for placeholders in form
 		$this->load->model('exam');
 		$data['examData'] = $this->getExamData();
 				
 		//load updateExam page
-		$this->load->view('adminHeader');
+		$this->load->view('adminHeader',$data);
 		$this->load->view('updateExam',$data);
 		$this->load->view('footer');
 	}
@@ -98,47 +104,41 @@ class Admin extends CI_controller {
 		}
 		//if the page is reached via url, get id from url
 		else{
-			
 			$data =array( 'id' => $this->uri->segment(3));
 			$this->load->view('deleteConfirm', $data);
 		}
 		$this->load->view('footer');
-
 	}
 	
 	//view data of exam with specific id (read only) (in progress) 
 	function viewExam(){
+		$data['title'] = 'View exam';
 		
 		$this->load->model('exam');
 		$data['examData'] = $this->getExamData();	
 		
-		$this->load->view('adminHeader');
+		$this->load->view('adminHeader',$data);
 		$this->load->view('viewExam', $data);
 		$this->load->view('footer');	
 	}
 
-	
-	
-	
 //-------------------------------------------Question methods --------------------------------------------------------------------
 
 	public function questionOverview(){
-				$this->load->model('Question');
+		$data['title'] = 'Question overview';
+		
+		$this->load->model('Question');
 		$data =array( 
-			'questionData' => $this->getQuestionData()
+			'questionData' => $this->getAllQuestionData()
 		);
-		$this->load->view('adminHeader');
+		$this->load->view('adminHeader', $data);
 		$this->load->view('questionOverview',$data);
 		$this->load->view('footer');
 	}
 	
-	private function getQuestionData(){
-		$this->load->model('Question');
-		$result = $this->Question->getQuestion();
-		return $result;
-	}
 
 	public function addQuestion(){
+		$data['title'] = 'Select exam';
 		
 		$questionType = $this->uri->segment(3);
 		$data= array(
@@ -182,24 +182,45 @@ class Admin extends CI_controller {
 			);
 		}
 		
-		$this->load->view('adminHeader');
+		$this->load->view('adminHeader', $data);
 		$this->load->view('addQuestion',$options, $data);
 		$this->load->view('footer');	
 	}
-
 	
-
-	//updateExam loads examdata inside form, and makes it possible to change it (in progress)
-	public function updateQuestion(){
-		//get data for question table
+	private function getAllQuestionData(){
 		$this->load->model('Question');
-		$data['questionData'] = $this->getQuestionData();		
+		$result = $this->Question->getAllQuestions();
+		return $result;
+	}
+	
+	private function getQuestionData($questionId){
+		$this->load->model('Question');
+		$result = $this->Question->getQuestion($questionId);
+		return $result;
+	}
+	
+	
+	//updateQuestion loads examdata inside form, and makes it possible to change it (in progress)
+	public function updateQuestion(){
+		$data['title'] = 'Update question';
 		
-		$this->question->getQuestion;
-		$questionType = getQuestion()->type;
+		$this->load->view('adminHeader', $data);
+		$questionId = $this->uri->segment(3);
+
+		$this->load->model('Question');
+
+		$data['questionData'] = $this->getQuestionData($questionId);
+
+		foreach ($data as $questionData){
+			foreach ($questionData as $key => $value){
+				if ($key == "type"){
+					$questionType = $value->type;
+				}
+			}
+		}
 				
 		if($questionType=="openEnded"){
-			$options = array(
+			$data['options'] = array(
 				'c2'=> "optional",
 				'c3'=> "optional",
 				'w1'=> "disabled",
@@ -209,9 +230,10 @@ class Admin extends CI_controller {
 				'w5'=> "disabled",
 				'w6'=> "disabled"
 			);
+
 		}
 		elseif($questionType=="multipleChoice"){
-			$options = array(
+			$data['options'] = array(
 				'c2'=>"disabled",
 				'c3'=>"disabled",
 				'w1'=>"required",
@@ -223,7 +245,7 @@ class Admin extends CI_controller {
 			);
 		}
 		elseif($questionType=="checkbox"){
-			$options =array(
+			$data['options'] = array(
 				'c2'=>"optional",
 				'c3'=>"optional",
 				'w1'=>"required",
@@ -234,13 +256,9 @@ class Admin extends CI_controller {
 				'w6'=>"optional"
 			);
 		}
-		
-		//load updateQuestion page
-		$this->load->view('adminHeader');
-		$this->load->view('updateQuestion',$data, $options);
-		$this->load->view('footer');
+			$this->load->view('updateQuestion',$data);
+			$this->load->view('footer');		
 	}
-	
 	
 	
 	//questioinFormImport saves form input in $data, and sends it to Question-model, which sends it to the DB (in progress)
@@ -313,23 +331,18 @@ class Admin extends CI_controller {
 
 	}
 
-	
-	
 	//view data of question with specific id (read only) (in progress) 
 	function viewQuestion(){
-		$this->load->model('question');
-		$data['questionData'] = $this->getQuestionData2();	
+		$data['title'] = 'view question';
 		
-		$this->load->view('adminHeader');
+		$this->load->model('question');
+		$data['questionData'] = $this->getAllQuestionData();	
+		
+		$this->load->view('adminHeader', $data);
 		$this->load->view('viewQuestion', $data);
 		$this->load->view('footer');	
 	}
 	
-	private function getQuestionData2(){
-		$this->load->model('Question');
-		$result = $this->Question->getQuestion2();
-		return $result;
-	}
 	
 }
 

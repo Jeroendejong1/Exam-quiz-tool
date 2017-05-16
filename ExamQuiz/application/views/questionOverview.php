@@ -34,8 +34,8 @@
 				  </ul>
 				</div>
 				
-				
-				<a href="" class="btn btn-primary" style="float:right;"><span class="glyphicon glyphicon-upload"></span> Add question file</a>
 				</td></tr>
 		</table>
 		</fieldset>
+		
+		<a href="<?php echo base_url();?>index.php/admin/examOverview" class="btn btn-primary">Back to exam overview</a>

@@ -6,15 +6,15 @@ class Question extends CI_Model{
 		$this->db->insert('question',$data);
 	}
 	
-	//SELECT FROM statement
-	public function getQuestion(){
-	//	$this->db->where('ExamID',$examId);
+	//SELECT FROM statement for update question
+	public function getQuestion($questionId){
+		$this->db->where('QuestionID',$questionId);
 		$query = $this->db->get('question');
 		return $query->result();
 	}
 	
-	//SELECT FROM without examid
-	public function getQuestion2(){
+	//SELECT FROM without examid for question overview
+	public function getAllQuestions(){
 		$query = $this->db->get('question');
 		return $query->result();
 	}

@@ -4,20 +4,23 @@
 	</nav>
 	<div class="text-center col-lg-4"></div>
 	<div class="text-center col-lg-4">
-		<h1>Select exam</h1>
-			<form method="post">		
+		<form method="post">		
 			<br>
-			<div class="col-lg-9">
-			<select class="form-control custon-select" name="exam">
-				
-				<?php
-					foreach($examData as $row){
-						echo "<option value='".$row->examID."'>" . $row->name ."</option>";
-					}
-				?>
-			</select>
+			<div class="panel panel-default">
+				<div class='panel-heading'>Select an exam</div>
+					<div class='panel-body'>
+						<select class="form-control" name="exam">
+							<?php
+								foreach($examData as $row){
+									echo "<option value='".$row->examID."'>" . $row->name ."</option>";
+								}
+							?>
+						</select>
+						<br>
+						<input type="submit" name="submit" value="Start" class="btn btn-block btn-primary">
+					</div>
+				</div>
 			</div>
-			<input type="submit" name="submit" value="Go" class="btn btn-primary">
 			
 			</form>
 		<br>

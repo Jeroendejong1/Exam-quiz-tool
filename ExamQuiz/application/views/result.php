@@ -1,4 +1,27 @@
+	<div class="row">
+		<h1> Quiz Results </h1>
+		<hr>
+		<div class="col-lg-12"><h2 class="text-center"><strong>Passed/not passed</strong></h2></div>
+			<div class= "col-lg-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading"><h3 class="padding-title">Results per subject</h3></div>
+					<div class="panel-body" id="barchart_div"></div>
+				</div>
+			</div>	
+			<div class= "col-lg-6">		
+				<div class="panel panel-primary">
+					<div class="panel-heading"><h3 class="padding-title">Total result</h3></div>
+					<div class="panel-body" id="piechart_div"></div>
+				</div>
+			</div>
+	</div>
+	<hr>
+	<a class="btn btn-primary" href="index.php">Save as pdf</a>
+	<a class="btn btn-primary" href="index.php">Check wrong answers</a>
+	<a class="btn btn-primary" href="<?php echo base_url();?>index.php" style="float:right;">Back to Home</a>
 
+	
+	
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
 	// Load Charts and the corechart and barchart packages.
@@ -59,30 +82,3 @@
         barchart.draw(bardata, options);
       }
 </script>
-</head>
-<body>
-<div class="container">
-	<div class="row">
-		<h1> Quiz Results </h1>
-		<hr>
-		<div class="col-lg-12"><h2 class="text-center"><strong>Passed/not passed</strong></h2></div>
-			<div class= "col-lg-6">
-				<div class="panel panel-primary">
-					<div class="panel-heading"><h3 class="padding-title">Results per subject</h3></div>
-					<div class="panel-body" id="barchart_div"></div>
-				</div>
-			</div>	
-			<div class= "col-lg-6">		
-				<div class="panel panel-primary">
-					<div class="panel-heading"><h3 class="padding-title">Total result</h3></div>
-					<div class="panel-body" id="piechart_div"></div>
-				</div>
-			</div>
-	</div>
-	<hr>
-	<a class="btn btn-primary" href="index.php">Save as pdf</a>
-	<a class="btn btn-primary" href="index.php">Email result</a>
-	<a class="btn btn-primary" href="index.php">Check wrong answers</a>
-	<a class="btn btn-primary" href="index.php">Send feedback</a>
-	<a class="btn btn-primary" href="<?php echo base_url();?>index.php/Start/index" style="float:right;">Back to Home</a>
-</div>

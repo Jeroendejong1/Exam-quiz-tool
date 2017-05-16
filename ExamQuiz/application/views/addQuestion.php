@@ -1,5 +1,9 @@
-<?php $examId =$this->uri->segment(4); ?>
-<?php $questionType =$this->uri->segment(3); ?>
+<?php
+	
+	$questionType =$this->uri->segment(3);
+	$examId =$this->uri->segment(4);
+
+?>
 <form method="post" id="achievementf1" action="<?php echo base_url();?>index.php/Admin/questionFormInput">
 <input type="hidden" name="exam" value="<?= $examId; ?>">
 <input type="hidden" name="type" value="<?= $questionType; ?>">
@@ -9,9 +13,6 @@
 		<div class= "col-lg-12">
 		<label for="casusText">Add casus-text (optional):</label>
 		<textarea class="form-control" id="casusText" name="casusText"></textarea>
-		<br>
-		<label for="casusFile">Add image (optional):</label>
-		<input type="file" id="casusFile" name="Image">
 		<br>
 		<label for="question">Add question-text:</label>
 		<input type="text" class="form-control" id="question" name="question" required>
@@ -39,8 +40,6 @@
 		<input type="text" class="form-control" id="correct2" name="correct2" placeholder="<?=$c2 ?>" <?=$c2 ?>><br>
 		<label for="correct1">Correct Answer 3:</label>
 		<input type="text" class="form-control" id="correct3" name="correct3" placeholder="<?=$c3 ?>" <?=$c3 ?>><br>
-	<br>
-	<br>
 	<div>
 	</fieldset>
 	<br>
@@ -58,8 +57,6 @@
 		<input type="text" class="form-control" id="wrong4" name="wrong4" placeholder="<?=$w4 ?>" <?=$w4 ?>><br>
 		<label for="wrong1">Wrong answer 5:</label>
 		<input type="text" class="form-control" id="wrong5" name="wrong5" placeholder="<?=$w5 ?>" <?=$w5 ?>><br>
-		<label for="wrong2">Wrong answer 6:</label>
-		<input type="text" class="form-control" id="wrong6" name="wrong6" placeholder="<?=$w6 ?>" <?=$w6 ?>><br>
 	<br>
 	<br>
 	<input type="submit" class="btn btn-success" name="Submit" value="Save question">

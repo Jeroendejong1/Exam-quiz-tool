@@ -57,9 +57,11 @@ foreach ($questionData as $row){
 	</tr>
 	<tr>
 		<td>
-		<?= $correctans1; ?><br>
-		<?= $correctans2; ?><br>
-		<?= $correctans3; ?>
+		<ol>
+		<li><?= $correctans1; ?></li>
+		<li><?= $correctans2; ?></li>
+		<li><?= $correctans3; ?></li>
+		</ol>
 		</td>
 	</tr>
 	<tr>
@@ -67,11 +69,13 @@ foreach ($questionData as $row){
 	</tr>
 	<tr>
 		<td>
-		<?= $wrongans1; ?><br>
-		<?= $wrongans2; ?><br>
-		<?= $wrongans3; ?><br>
-		<?= $wrongans4; ?><br>
-		<?= $wrongans5; ?>
+		<ol>
+		<li><?= $wrongans1; ?></li>
+		<li><?= $wrongans2; ?></li>
+		<li><?= $wrongans3; ?></li>
+		<li><?= $wrongans4; ?></li>
+		<li><?= $wrongans5; ?></li>
+		</ol>
 		</td>
 	</tr>
 
