@@ -14,6 +14,12 @@ class Exam extends CI_Model{
 		return $query->result();
 	}
 	
+	public function getExamDataById($examId){
+		$this->db->where('examID',$examId);
+		$query = $this->db->get('exam');
+		return $query->result();
+	}
+	
 	//Update exam data 
 	public function examUpdate($data,$id){
 		$this->db->where('examID',$id);

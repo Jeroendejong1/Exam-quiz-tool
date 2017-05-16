@@ -18,7 +18,7 @@
 							<span class="invalidInput"><?php echo form_error('password'); ?></span>
 						</div>
 						<button class="btn btn-success" type="submit">Login</button>
-						<a class="btn btn-danger" href= "<?php echo base_url();?>index.php/Start/home">Return</a>
+						<a class="btn btn-default" href= "<?php echo base_url();?>index.php">Return</a>
 					</form>
 				</div>
 			</div>

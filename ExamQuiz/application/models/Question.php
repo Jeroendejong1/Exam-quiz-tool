@@ -19,6 +19,12 @@ class Question extends CI_Model{
 		return $query->result();
 	}
 	
+	public function getAllQuestionsByExam($examId){
+		$this->db->where('examID',$examId);
+		$query = $this->db->get('question');
+		return $query->result();
+	}
+	
 	//UPDATE WHERE statement
 	public function questionUpdate($data, $id){
 		$this->db->where('questionID',$id);

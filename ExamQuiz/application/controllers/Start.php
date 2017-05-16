@@ -32,9 +32,7 @@ class Start extends CI_controller {
 		$data['title'] = 'Instructions';
 		
 		$this->load->model('Exam');
-		$data['examData'] = $this->Exam->getExamData();
-		
-		
+		$data['examData'] = $this->Exam->getExamDataById($_SESSION['examId']);
 		
 		$data['questionCount'] = count($data['examData']);		//fix
 		
@@ -44,20 +42,43 @@ class Start extends CI_controller {
 	}
 	
 	public function questionPage(){
+		
+		$currentIndex = $this->uri->segment(3);
+		$next = $currentIndex +1;
+		$previous = $currentIndex-1;
+		// check post data
+		if(isset($_POST['btnPrev'])) {
+			$currentIndex = $this->uri->segment(3) -1;
+			$next = $currentIndex +1;
+			$previous = $currentIndex-1;
+		}
+		elseif(isset($_POST['btnStop'])) {
+
+		}
+		elseif(isset($_POST['btnNext'])) {
+			$currentIndex = $this->uri->segment(3)+1;
+			$next = $currentIndex +1;
+			$previous = $currentIndex-1;
+		}
+		
+		$data['currentIndex'] = $currentIndex;
+		$data['next'] = $next;
+		$data['previous'] = $previous;
+		
 		$data['title'] = 'Quiz';
 		
 		$this->load->model('Exam');
-		$data['examData'] = $this->Exam->getExamData();
+		$data['examData'] = $this->Exam->getExamDataById($_SESSION['examId']);
 		
 		$this->load->model('Question');
-		$data['questionData'] = $this->Question->getAllQuestions();
+		$data['questionData'] = $this->Question->getAllQuestionsByExam($_SESSION['examId']);
 		
-		$this->load->view('header');
+		$this->load->view('header',$data);
 		$this->load->view('questionPage', $data);
 		$this->load->view('footer');
 	}
 	
-	private function getQuestionData2(){
+	private function getAllQuestionData(){
 		$this->load->model('Question');
 		$result = $this->Question->getAllQuestions();
 		return $result;

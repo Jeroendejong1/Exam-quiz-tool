@@ -211,12 +211,10 @@ class Admin extends CI_controller {
 
 		$data['questionData'] = $this->getQuestionData($questionId);
 
-		foreach ($data as $questionData){
-			foreach ($questionData as $key => $value){
+		foreach ($data['questionData'] as $key => $value){
 				if ($key == "type"){
 					$questionType = $value->type;
 				}
-			}
 		}
 				
 		if($questionType=="openEnded"){
