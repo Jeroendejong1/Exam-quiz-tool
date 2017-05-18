@@ -34,76 +34,106 @@ class Start extends CI_controller {
 		$this->load->model('Exam');
 		$data['examData'] = $this->Exam->getExamDataById($_SESSION['examId']);
 		
-		$data['questionCount'] = count($data['examData']);		//fix
+		$this->load->model('Question');
+		$data['questionData'] = $this->Question->getAllQuestionsByExam($_SESSION['examId']);
+		
+		$data['questionCount'] = count($data['questionData']);
+		
+		// $subjects = array ();
+		// foreach($data['questionData'] as $questions => $question){
+			// foreach($question as $key => $value){
+				// if ($key == 'subject'){
+					// array_push($subjects,$value);
+				// }
+			// }
+		// }
+		
+		// $subjects = array_unique($subjects);
+		
+		if(isset($_POST['start'])){
+			$_SESSION['userInput'] = "";
+		}
 		
 		$this->load->view('header',$data);
 		$this->load->view('examInstructions', $data);
-		$this->load->view('footer');	
+		$this->load->view('footer');
 	}
 	
 	public function questionPage(){
-		
-		$currentIndex = $this->uri->segment(3);
-		$next = $currentIndex +1;
-		$previous = $currentIndex-1;
-		// check post data
-		if(isset($_POST['btnPrev'])) {
-			$currentIndex = $this->uri->segment(3) -1;
-			$next = $currentIndex +1;
-			$previous = $currentIndex-1;
-		}
-		elseif(isset($_POST['btnStop'])) {
-
-		}
-		elseif(isset($_POST['btnNext'])) {
-			$currentIndex = $this->uri->segment(3)+1;
-			$next = $currentIndex +1;
-			$previous = $currentIndex-1;
-		}
-		
-		$data['currentIndex'] = $currentIndex;
-		$data['next'] = $next;
-		$data['previous'] = $previous;
-		
-		$data['title'] = 'Quiz';
-		
 		$this->load->model('Exam');
 		$data['examData'] = $this->Exam->getExamDataById($_SESSION['examId']);
 		
 		$this->load->model('Question');
 		$data['questionData'] = $this->Question->getAllQuestionsByExam($_SESSION['examId']);
 		
+		$data['questionCount'] = count($data['questionData']);
+		
+		//get maximum number of points of the exam
+		$maxScore = 0;
+		foreach($data['questionData'] as $questions => $question){
+			foreach($question as $key => $value){
+				if ($key == 'points'){
+					$maxScore += $value;
+				}
+			}
+		}
+		
+		//evaluate given answers
+		// if(isset('submitForm'){
+			// if($question->type == "openEnded"){
+				// if($_POST['input'] == $question->correctans1 || $_POST['input'] == $question->correctans2 || $_POST['input'] == $question->correctans3){
+					// $totalScore += $question->points;
+				// }
+			// }
+			// elseif($question->type == "multipleChoice"){
+				// if($_POST['input'] == $question->correctans1){
+					// $totalScore += $question->points;
+				// }
+			// }
+			// elseif($question->type == "checkbox"){
+				// if($_POST['input'] == $question->correctans1 && $_POST['input'] == $question->correctans2 && $_POST['input'] == $question->correctans3){
+					// $totalScore += $question->points;
+				// }
+			// }
+		// }
+	
+		$data['currentIndex'] = $this->uri->segment(3);
+		$next = $data['currentIndex'] +1;
+		$previous = $data['currentIndex'] -1;
+		
+		$data['changeValue'] = "Next";
+		$data['hidePrev'] = "submit";
+		
+		$data['title'] = 'Quiz';	
+
+		
+		// check which submit button is pressed
+		$submitForm = $this->input->post('submitForm');
+		if($submitForm == 'Previous'){
+			if	($data['currentIndex'] != 0){
+				redirect("Start/questionPage/$previous");
+			}
+			else{
+				$data['hidePrev'] = "hidden";
+			}
+		}
+		if($submitForm == 'Stop'){
+			redirect("Start/index");
+		}
+		if($submitForm == 'Next'){
+			if ($currentIndex < $data['questionCount']-1){
+				redirect("Start/questionPage/$next");
+			}
+			else{
+				redirect("Start/result");
+			}
+		}
+		
 		$this->load->view('header',$data);
 		$this->load->view('questionPage', $data);
 		$this->load->view('footer');
 	}
-	
-	private function getAllQuestionData(){
-		$this->load->model('Question');
-		$result = $this->Question->getAllQuestions();
-		return $result;
-	}
-	
-	public function question(){	
-		$id = $_SESSION['examId'];
-		$data['questionData'] = $this->getAllQuestionData();
-		foreach ($data['questionData'] as $row){
-			if($row->examID == $id){
-				$questions[] = $row;
-			
-				$data['answers'] = array($row->correctans1, $row->correctans2, $row->correctans3, $row->wrongans1,
-									$row->wrongans2, $row->wrongans3, $row->wrongans4, $row->wrongans5);
-			}
-		}	
 
-		$data = array(
-			'question' => 'testtext',
-			'title' => 'Quiz'
-		);
-		$this->load->view('header', $data);
-		$this->load->view('question', $data);
-		$this->load->view('footer');
-	}
 	
 	public function result(){
 		$data['title'] = 'Result';

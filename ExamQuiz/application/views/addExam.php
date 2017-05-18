@@ -13,7 +13,7 @@
 				<input type="number" class="form-control" id="examTime" min="1" max="300" name="examTime">
 				<br><br>
 				<label for="examTime">Requiered score (percentage):</label><br>
-				<input type="number" class="form-control" max="100" min="0" id="requieredScore" name="requieredScore">
+				<input type="number" class="form-control" max="100" min="0" id="requiredScore" name="requiredScore">
 				<br><br>
 				<input type="submit" name="submit" class="btn btn-success" value="save exam" href="<?php echo base_url();?>index.php/admin/examOverview">
 				<a href="<?php echo base_url();?>index.php/Admin/examOverview" class="btn btn-danger">Return without saving</a>

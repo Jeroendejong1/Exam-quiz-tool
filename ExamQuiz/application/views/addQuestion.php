@@ -11,22 +11,32 @@
 	<fieldset>
 	<legend>General settings</legend>
 		<div class= "col-lg-12">
-		<label for="casusText">Add casus-text (optional):</label>
-		<textarea class="form-control" id="casusText" name="casusText"></textarea>
-		<br>
-		<label for="question">Add question-text:</label>
-		<input type="text" class="form-control" id="question" name="question" required>
-		<br>
-		<label for="question">Points for this question: </label>
-		<input type="number" class="form-control" id="points" name="points" max="6" min="1" required>
+			<label for="casusText">Add casus-text (optional):</label>
+			<textarea class="form-control" id="casusText" name="casusText"></textarea>
+			<br>
+			<label for="question">Add question-text:</label>
+			<input type="text" class="form-control" id="question" name="question" required>
+			<br>
+			<label for="question">Points for this question: </label>
+			<input type="number" class="form-control" id="points" name="points" max="6" min="1" required>
 		</div>
 	</fieldset>
 	<br>
 	<br>
 	<fieldset>
-	<legend>Add to subject</legend>
+	<legend>Assign to subject</legend>
 	<div class= "col-lg-12">
-		<input type="text" required name="subject" class="form-control" id="select-subject">
+		<input checked type="radio" value="existing" name="assignSubject" > Existing subject
+		<select class="form-control" name="existingSubject">
+			<?php 
+			foreach($subjects as $subject){
+				echo "<option value='$subject'>$subject</option>";
+			}
+			?>
+		</select>
+		<br>
+		<input type="radio" value="new" name="assignSubject"> New subject
+		<input type="text"  name="newSubject" class="form-control" id="select-subject">
 	</div>
 	</fieldset>
 </div>

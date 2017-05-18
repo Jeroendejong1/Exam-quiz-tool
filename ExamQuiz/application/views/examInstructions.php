@@ -1,5 +1,4 @@
 <?php
-
 $id = $_SESSION['examId'];
 
 foreach($examData as $row){
@@ -9,11 +8,7 @@ foreach($examData as $row){
 		$time = $row->duration;
 	}
 }
-
-
-
 ?>
-
 
 <div class="panel panel-default">
 	<div class='panel-heading'>Instructions</div>
@@ -22,7 +17,7 @@ foreach($examData as $row){
 			You have selected the "<strong><?= $name?></strong>" exam quiz.
 		</p>
 		<p>
-			This exam quiz has <strong>...</strong> questions. Each question is worth 1 or more points.
+			This exam quiz has <strong><?= $questionCount ?></strong> questions. Each question is worth 1 or more points.
 			If you get at least <strong><?=$requiredScore ?>%</strong> of the points, you have passed the exam quiz.
 			The time limit for this exam is <strong><?= $time ?> minutes</strong>. The counter starts when you click on the "Start Exam"-button. You can see in the remaining time in the bottom-left corner.
 		</p>
@@ -33,7 +28,7 @@ foreach($examData as $row){
 
 		<form action="<?php echo base_url();?>index.php/Start/questionPage/0">
 		<a href="<?php echo base_url();?>index.php/" class="btn btn-default">Return to overview</a>
-		<input type="submit" value="Start Exam" class="btn btn-success">
+		<input type="submit" name="start" value="Start Exam" class="btn btn-success">
 		</form>
 	</div>
 </div>

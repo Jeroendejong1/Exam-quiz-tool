@@ -141,9 +141,22 @@ class Admin extends CI_controller {
 		$data['title'] = 'Select exam';
 		
 		$questionType = $this->uri->segment(3);
-		$data= array(
+		$data['examId']= array(
 			'examId' => $this->uri->segment(4)
-		);
+		);		
+		$examId = $this->uri->segment(4);
+		$this->load->model('Question');
+		$data['questionData'] = $this->Question->getAllQuestionsByExam($examId);
+		
+		$subjects = array ();
+		foreach($data['questionData'] as $questions => $question){
+			foreach($question as $key => $value){
+				if ($key == 'subject'){
+					array_push($subjects,$value);
+				}
+			}
+		}
+		$data['subjects'] = array_unique($subjects);
 		
 		if($questionType=="openEnded"){
 			$options = array(
@@ -275,8 +288,13 @@ class Admin extends CI_controller {
 			'wrongans4' => $this->input->post('wrong4'),
 			'wrongans5' => $this->input->post('wrong5'),
 			'examID' => $this->input->post('exam'),
-			'subject' => $this->input->post('subject')
 		);
+		if($_POST['assignSubject'] == 'existing'){
+			$data['subject'] = $this->input->post('existingSubject');
+		}
+		elseif($_POST['assignSubject'] == 'new'){
+			$data['subject'] = $this->input->post('newSubject');
+		}
 		
 		$this->load->model('Question');							//load model
 		$this->Question->insertIntoQuestion($data);				//send $data to insertIntoQuestion-method
