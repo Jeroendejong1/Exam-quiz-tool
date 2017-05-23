@@ -39,19 +39,9 @@ class Start extends CI_controller {
 		
 		$data['questionCount'] = count($data['questionData']);
 		
-		// $subjects = array ();
-		// foreach($data['questionData'] as $questions => $question){
-			// foreach($question as $key => $value){
-				// if ($key == 'subject'){
-					// array_push($subjects,$value);
-				// }
-			// }
-		// }
-		
-		// $subjects = array_unique($subjects);
-		
 		if(isset($_POST['start'])){
-			$_SESSION['userInput'] = "";
+			$_SESSION['userInput'] = array();
+			$this->session->mark_as_temp('examtime',$duration*60);
 		}
 		
 		$this->load->view('header',$data);
@@ -78,24 +68,29 @@ class Start extends CI_controller {
 			}
 		}
 		
-		//evaluate given answers
-		// if(isset('submitForm'){
-			// if($question->type == "openEnded"){
+		// evaluate given answers
+		$totalScore =0;
+		if(isset($_POST['submitForm'])){
+			echo "gelukt";
+			$totalScore =$totalScore +1;
+			if($question->type == "openEnded"){
 				// if($_POST['input'] == $question->correctans1 || $_POST['input'] == $question->correctans2 || $_POST['input'] == $question->correctans3){
 					// $totalScore += $question->points;
 				// }
-			// }
-			// elseif($question->type == "multipleChoice"){
+			}
+			elseif($question->type == "multipleChoice"){
 				// if($_POST['input'] == $question->correctans1){
 					// $totalScore += $question->points;
 				// }
-			// }
-			// elseif($question->type == "checkbox"){
+			}
+			elseif($question->type == "checkbox"){
 				// if($_POST['input'] == $question->correctans1 && $_POST['input'] == $question->correctans2 && $_POST['input'] == $question->correctans3){
 					// $totalScore += $question->points;
 				// }
-			// }
-		// }
+			}
+		}
+		
+		echo $totalScore;
 	
 		$data['currentIndex'] = $this->uri->segment(3);
 		$next = $data['currentIndex'] +1;
@@ -121,7 +116,7 @@ class Start extends CI_controller {
 			redirect("Start/index");
 		}
 		if($submitForm == 'Next'){
-			if ($currentIndex < $data['questionCount']-1){
+			if ($data['currentIndex'] < $data['questionCount']-1){
 				redirect("Start/questionPage/$next");
 			}
 			else{
@@ -133,7 +128,21 @@ class Start extends CI_controller {
 		$this->load->view('questionPage', $data);
 		$this->load->view('footer');
 	}
-
+	
+	public function examQuestions(){
+		$data['title'] = 'Overview';
+		
+		$this->load->model('Exam');
+		$data['examData'] = $this->Exam->getExamDataById($_SESSION['examId']);
+		
+		$this->load->model('Question');
+		$data['questionData'] = $this->Question->getAllQuestionsByExam($_SESSION['examId']);
+		
+		
+		$this->load->view('header',$data);
+		$this->load->view('examQuestions');
+		$this->load->view('footer');
+	}
 	
 	public function result(){
 		$data['title'] = 'Result';

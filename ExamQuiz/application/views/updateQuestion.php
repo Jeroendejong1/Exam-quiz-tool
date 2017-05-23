@@ -30,7 +30,7 @@
 			<input type="hidden" name="id" value="<?= $questionId ?>">
 			
 			<label for="casusText">Add casus-text (optional):</label>
-			<input type="text"  class="form-control" id="casusText" value="<?= $casus ?>" name="casusText">
+			<textarea class="form-control" id="casusText" value="<?= $casus ?>" name="casusText"><?= $casus ?></textarea>
 			<br>
 			<label for="question">Add question-text:</label>
 			<input type="text" class="form-control" id="question" name="question" value="<?=$question ?>" requiered>

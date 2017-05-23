@@ -1,8 +1,4 @@
-<?php 
-$currentIndex = $this->uri->segment(3);
-$next = $currentIndex +1;
-$previous = $currentIndex-1;
-?>
+
 
 <a class="btn btn-default" href="question_page.php">Overview questions</a>
 <a class="btn btn-danger" href="<?php echo base_url();?>index.php/Start/index" onclick = "confirm()">Stop exam</a>
