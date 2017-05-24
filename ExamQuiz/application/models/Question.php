@@ -21,6 +21,7 @@ class Question extends CI_Model{
 	
 	public function getAllQuestionsByExam($examId){
 		$this->db->where('examID',$examId);
+		$this->db->order_by('subject');
 		$query = $this->db->get('question');
 		return $query->result();
 	}

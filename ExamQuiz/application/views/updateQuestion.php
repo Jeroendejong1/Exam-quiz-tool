@@ -44,7 +44,17 @@
 		<fieldset>
 		<legend>Add to subject</legend>
 			<div class= "col-lg-12">
-				<input type="text" required name="subject" class="form-control" id="select-subject" value="<?=$subject ?>">
+				<input checked type="radio" value="existing" name="assignSubject" > Existing subject
+				<select class="form-control" name="existingSubject">
+					<?php 
+					foreach($subjects as $subject){
+						echo "<option value='$subject'>$subject</option>";
+					}
+					?>
+				</select>
+				<br>
+				<input type="radio" value="new" name="assignSubject"> New subject
+				<input type="text"  name="newSubject" class="form-control" id="select-subject">
 			</div>
 		</fieldset>
 	</div>

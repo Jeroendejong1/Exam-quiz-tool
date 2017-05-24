@@ -2,14 +2,15 @@
 $examID = $_SESSION['examId'];
 ?>
 
-<form method="POST">
-
+<form method="post">
 <a href="<?= base_url() ?>/index.php/Start/examQuestions" class="btn btn-primary">Question overview</a>
+<input class="btn btn-danger" type="submit" name="submitForm" value="Stop">
+
 <br>
 <?php
 $row = $questionData[$currentIndex];
 
-		$casus = $row->casus;
+		//$casus = $row->casus;
 		$correctans1 = $row->correctans1;
 		$correctans2 = $row->correctans2;
 		$correctans3 = $row->correctans3;
@@ -25,11 +26,11 @@ $row = $questionData[$currentIndex];
 $answers = array($row->correctans1, $row->correctans2, $row->correctans3, $row->wrongans1,
 			$row->wrongans2, $row->wrongans3, $row->wrongans4, $row->wrongans5);
 echo"	<b>Question ".($currentIndex+1)." of $questionCount:</b><br>
-		<div class='panel panel-default'>
-			<div class='panel-heading'>Casus:</div>
-			<div class='panel-body'><pre>".$row->casus."</pre></div>
-		</div>
-		".$row->question."<br><br>
+
+			<p> Casus:</p>
+			<pre>". $casus = $row->casus;  highlight_string($row->casus); echo "</pre>
+
+		<h4>".$row->question."<br></h4>
 		<hr>"
 	;
 
@@ -44,7 +45,7 @@ elseif($row->type == "multipleChoice"){
 	echo "<b>Select your answer:</b><br>";
 	foreach ($answers as $key => $answer){
 		if($answer != ""){
-			echo 	"<div class='radio'><label><input name='input' type='radio' value='".$answer."'> ". $answer."</label><br>";
+			echo "<div class='radio'><label><input name='input' type='radio' value='".$answer."'> ". $answer."</label><br>";
 		}
 	}
 }
@@ -59,14 +60,13 @@ elseif($row->type == "checkbox"){
 }
 
 ?>
-<hr>
-<input type="checkbox" name="reviewQuestion" value="checked"> Check this question later
 
-<div class="footer navbar-fixed-bottom footer-bar">
+
+
+	<hr>
 	<input class="btn btn-default" type="<?= $hidePrev ?>" name="submitForm" value="Previous">
 	Tijd over: <span id="demo"></span>
-	<input class="btn btn-danger" type="submit" name="submitForm" value="Stop">
+	<input type="checkbox" name="reviewQuestion" value="checked"> Check this question later
 	<input class="btn btn-default" type="submit" name="submitForm" value="<?= $changeValue ?>">
-</div>
 </form>
 

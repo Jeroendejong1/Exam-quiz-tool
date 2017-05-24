@@ -229,6 +229,17 @@ class Admin extends CI_controller {
 					$questionType = $value->type;
 				}
 		}
+		
+		$subjects = array ();
+		foreach($data['questionData'] as $questions => $question){
+			foreach($question as $key => $value){
+				if ($key == 'subject'){
+					array_push($subjects,$value);
+				}
+			}
+		}
+		
+		$data['subjects'] = array_unique($subjects);
 				
 		if($questionType=="openEnded"){
 			$data['options'] = array(
