@@ -1,7 +1,7 @@
 <?php $examId =$this->uri->segment(3); ?>
 <fieldset><legend>Questions</legend>
 		<table class="table table-bordered">
-			<th>Question</th><th>Subject</th><th>Level</th><th>Actions</th>
+			<th>Question</th><th>Subject</th><th>Points</th><th>Actions</th>
 			<?php
 				foreach($questionData as $row){
 				if($row->examID == $examId){
@@ -30,7 +30,6 @@
 				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 					<li><a href="<?php echo base_url();?>index.php/admin/addQuestion/openEnded/<?= $examId ?>">Open ended</a></li>
 					<li><a href="<?php echo base_url();?>index.php/admin/addQuestion/multipleChoice/<?= $examId ?>">Multiple choice</a></li>
-					<li><a href="<?php echo base_url();?>index.php/admin/addQuestion/checkbox/<?= $examId ?>">checkbox (multiple solutions possible)</a></li>
 				  </ul>
 				</div>
 				

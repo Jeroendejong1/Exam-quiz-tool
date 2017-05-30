@@ -26,6 +26,7 @@ class Start extends CI_controller {
 		if(isset($_POST['submit'])){
 			redirect('Start/instructions');
 		}
+
 	}
 
 	public function instructions(){
@@ -88,14 +89,16 @@ class Start extends CI_controller {
 			}
 		}
 		if($submitForm == 'Stop'){
-		//	redirect("Start/index");
+		redirect("Start/index");
 		}
 		if($submitForm == 'Next'){
+
 			if ($data['currentIndex'] < $data['questionCount']-1){
-				$_SESSION['allUserAnswers'][] = $this->input->post('input') ;
+				$_SESSION['allUserAnswers'][$data['questionData'][$data['currentIndex']]->questionID] = $this->input->post('input-'.$data['questionData'][$data['currentIndex']]->questionID) ;
 				redirect("Start/questionPage/$next");
 			}
 			else{
+				$_SESSION['allUserAnswers'][$data['questionData'][$data['currentIndex']]->questionID] = $this->input->post('input-'.$data['questionData'][$data['currentIndex']]->questionID) ;
 				redirect("Start/result");
 			}
 		}
@@ -140,25 +143,54 @@ class Start extends CI_controller {
 		}
 		
 		$data['userScore']=0;
-		$count = count($_SESSION['allQuestions']);
-		$i = 0;
-		for($i = 0; $i < $count; $i++) {
-			if($_SESSION['allQuestions'][$i]->correctans1 == $_SESSION['allUserAnswers'][$i]||
-			$_SESSION['allQuestions'][$i]->correctans2 == $_SESSION['allUserAnswers'][$i]||
-			$_SESSION['allQuestions'][$i]->correctans3 == $_SESSION['allUserAnswers'][$i]) {
-				$data['userScore']+=$_SESSION['allQuestions'][$i]->points;
+		$data['summary'] = array();
+		$iterator=0;
+		foreach($_SESSION['allQuestions'] as $key => $value){
+			if( array_key_exists($value->questionID, $_SESSION['allUserAnswers'] ) ) {
+				if( empty($_SESSION['allUserAnswers'][$value->questionID]) ) {
+					$data['summary'][] = 
+						'<b>'.$value->question.'</b><br>
+						Your answer: -- No answer given -- <br>
+						Correct answer: '. $value->correctans1 .'<br>
+						Balance: '.$data['userScore']."<hr>";
+				}
+				elseif( 
+					$_SESSION['allUserAnswers'][$value->questionID] == $value->correctans1 ||
+					$_SESSION['allUserAnswers'][$value->questionID] == $value->correctans2 ||
+					$_SESSION['allUserAnswers'][$value->questionID] == $value->correctans3 
+				){
+					$data['userScore'] += $value->points;
+					$data['summary'][] = 
+						'<b>'.$value->question .'</b><br>
+						Your answer: '. $value->correctans1 .' <br>
+						Correct answer: '. $value->correctans1 .'<br>
+						Balance: '.$data['userScore']."<hr>";
+						;
+				}
+				else{
+					$data['summary'][] = 
+						'<b>'.$value->question .'</b><br>
+						Your answer: '. $_SESSION['allUserAnswers'][$value->questionID] .' <br>
+						Correct answer: '. $value->correctans1 .'<br>
+						Balance: '.$data['userScore']."<hr>";
+					;
+				}
 			}
 		}
+		
 		
 		//calculate result
 		$data['result'] = $data['userScore']/$maxScore*100;
 				
 		
 		//check if user is passed
-		if($result >= $data['examData']->requiredScore)
+		if( is_object($data['examData'][0]) && $data['result'] >= $data['examData'][0]->requiredScore) {
 			$data['passed'] = "passed";
-		else $data['passed'] = "Not passed";
+		} else {
+			$data['passed'] = "Not passed";
+		}
 		
+		//get subject from each question and put them in an array
 		$subjects = array();
 		foreach($data['questionData'] as $questions => $question){
 			foreach($question as $key => $value){
@@ -167,15 +199,12 @@ class Start extends CI_controller {
 				}
 			}
 		}
-
+		//filter duplicate subjects
 		$data['subjects'] = array_unique($subjects);
 		
 		$this->load->view('header',$data);
-		$this->load->view('result');
+		$this->load->view('result',$data);
 		$this->load->view('footer');
-		
-		// $_SESSION['allQuestions']="";
-		// $_SESSION['allUserAnswers']="";
 	}   
 }
 

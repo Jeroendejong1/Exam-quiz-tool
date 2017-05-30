@@ -182,18 +182,6 @@ class Admin extends CI_controller {
 				'w6'=>"optional"
 			);
 		}
-		elseif($questionType=="checkbox"){
-			$options =array(
-				'c2'=>"optional",
-				'c3'=>"optional",
-				'w1'=>"required",
-				'w2'=>"optional",
-				'w3'=>"optional",
-				'w4'=>"optional",
-				'w5'=>"optional",
-				'w6'=>"optional"
-			);
-		}
 		
 		$this->load->view('adminHeader', $data);
 		$this->load->view('addQuestion',$options, $data);
@@ -266,18 +254,7 @@ class Admin extends CI_controller {
 				'w6'=>"optional"
 			);
 		}
-		elseif($questionType=="checkbox"){
-			$data['options'] = array(
-				'c2'=>"optional",
-				'c3'=>"optional",
-				'w1'=>"required",
-				'w2'=>"optional",
-				'w3'=>"optional",
-				'w4'=>"optional",
-				'w5'=>"optional",
-				'w6'=>"optional"
-			);
-		}
+
 			$this->load->view('updateQuestion',$data);
 			$this->load->view('footer');		
 	}
